@@ -1,0 +1,36 @@
+﻿# Build results
+bin/
+obj/
+
+# Visual Studio / Rider / VS Code
+.vs/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.cache
+*.vcxproj.user
+*.csproj.user
+
+# Rider-specific
+*.DotSettings.user
+
+# Test / coverage output
+TestResults/
+coverage/
+coverage.*
+
+# .NET publish output
+publish/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Optional: NuGet packages
+packages/
+*.nupkg
