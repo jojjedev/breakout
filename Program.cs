@@ -25,7 +25,7 @@ class Program
                     clock.Restart().AsSeconds();
                 window.DispatchEvents();
                 ball.Update(dt);
-                paddle.Update(dt);
+                paddle.Update(ball, dt);
                 window.Clear(new Color(131, 197, 235));
                 ball.Draw(window);
                 paddle.Draw(window);

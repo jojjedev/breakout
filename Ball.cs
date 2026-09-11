@@ -11,6 +11,9 @@ public class Ball
     public const float Diameter = 20.0f;
     public const float Radius = Diameter * .5f;
     public Vector2f direction = new Vector2f(1, 1) / MathF.Sqrt(2.0f);
+    public int Health = 3;
+    public int Score;
+    public Text gui;
 
     public Ball()
     {
@@ -22,11 +25,25 @@ public class Ball
         sprite.Scale = new Vector2f(
             Diameter / ballTextureSize.X,
             Diameter / ballTextureSize.Y);
+        gui = new Text();
+        gui.CharacterSize = 24;
+        gui.Font = new Font("assets/future.ttf");
     }
 
     public void Draw(RenderTarget target)
     {
-        target.Draw(sprite);    
+        // Ritar ball
+        target.Draw(sprite);
+    
+        // Ritar Health
+        gui.DisplayedString = $"Health: {Health}";
+        gui.Position = new Vector2f(12, 8);
+        target.Draw(gui);
+        
+        //Ritar Score
+        gui.DisplayedString = $"Score: {Score}";
+        gui.Position = new Vector2f(Program.ScreenW - gui.GetGlobalBounds().Width - 12, 8);
+        target.Draw(gui);
     }
 
     public void Update(float dt)
@@ -43,15 +60,17 @@ public class Ball
             newPos.X = 0 + Radius;
             Reflect(new Vector2f(1, 0)); // Vänstersidan
         }
-        if (newPos.Y > Program.ScreenH - Radius)
-        {
-            newPos.Y = Program.ScreenH - Radius;
-            Reflect(new Vector2f(0, -1)); // Golvet
-        }
         if (newPos.Y < 0 + Radius)
         {
             newPos.Y = 0 + Radius;
             Reflect(new Vector2f(0, 1)); // Taket
+        }
+        if (newPos.Y > Program.ScreenH - Radius)
+        {
+            newPos.X = 250;
+            newPos.Y = 300;
+            direction = new Vector2f(1, 1) / MathF.Sqrt(2.0f);
+            Health--;
         }
         sprite.Position = newPos;
     }
