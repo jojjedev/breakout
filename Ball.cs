@@ -18,6 +18,7 @@ public class Ball
     public Vector2f spawnPosition = new Vector2f(250, 400);
     public Text gui;
     private Vector2f newPos = new Vector2f(250, 400);
+    private bool ballOnPaddle = false;
 
     public Ball()
     {
@@ -52,6 +53,7 @@ public class Ball
 
     public void Update(float dt, Paddle paddle)
     {
+       
         //newPos = sprite.Position;
         newPos += direction * dt * 100.0f;
         if (newPos.X > Program.ScreenW - Radius)
@@ -71,10 +73,23 @@ public class Ball
         }
         if (newPos.Y > Program.ScreenH - Radius)
         {
-            ballOnPaddle(paddle);
-            //direction = new Vector2f(1, 1) / MathF.Sqrt(2.0f);
+            newPos.Y = paddle.sprite.Position.Y - paddle.size.Y / 2 - Radius - 5;
+            newPos.X = paddle.sprite.Position.X;
+            direction = new Vector2f(0, 0);
+            ballOnPaddle = true;
             Health--;
             BonusScore = 0; // Nollställer bonus ifall boll når botten
+        }
+
+        if (ballOnPaddle)//newPos.Y == paddle.sprite.Position.Y - paddle.size.Y / 2 - Radius - 5)
+        {
+            newPos.Y = paddle.sprite.Position.Y - paddle.size.Y / 2 - Radius - 5;
+            newPos.X = paddle.sprite.Position.X;
+            if (Keyboard.IsKeyPressed(Keyboard.Key.Space))
+            {
+                direction = new Vector2f(0, -1) / MathF.Sqrt(2.0f);
+                ballOnPaddle = false;
+            }
         }
         sprite.Position = newPos;
     }
@@ -85,20 +100,4 @@ public class Ball
             direction.X * normal.X +
             direction.Y * normal.Y));
     }
-
-    public void ballOnPaddle(Paddle paddle)
-    {
-        do
-        {
-            newPos.Y = paddle.sprite.Position.Y - 20;
-            newPos.X = paddle.sprite.Position.X;
-            //direction = new Vector2f(0, 0);
-            sprite.Position = newPos;
-
-        }while(!Keyboard.IsKeyPressed(Keyboard.Key.Space));
-        
-        //direction = new Vector2f(1, -1) / MathF.Sqrt(2.0f);
-    }
-    
-    
 }
