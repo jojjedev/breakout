@@ -8,9 +8,9 @@ public class Paddle
 {
     public Sprite sprite;
     public const float Diameter = 20.0f;
-    public const float Radius = Diameter * .5f;
+    //public const float Radius = Diameter * .5f;
     public Vector2f size;
-    public Vector2f direction = new Vector2f(1, 1) / MathF.Sqrt(2.0f);
+    //public Vector2f direction = new Vector2f(1, 1) / MathF.Sqrt(2.0f);
 
     public Paddle()
     {
@@ -60,6 +60,7 @@ public class Paddle
         {
             ball.sprite.Position += hit;
             ball.Reflect(hit.Normalized());
+            ball.BonusScore = 0;
         }
     }
 }

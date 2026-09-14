@@ -2,6 +2,7 @@ using System.Net.Http.Headers;
 using System.Numerics;
 using SFML.Graphics;
 using SFML.System;
+using SFML.Window;
 
 namespace breakout;
 
@@ -10,16 +11,19 @@ public class Ball
     public Sprite sprite;
     public const float Diameter = 20.0f;
     public const float Radius = Diameter * .5f;
-    public Vector2f direction = new Vector2f(1, 1) / MathF.Sqrt(2.0f);
+    public Vector2f direction = new Vector2f(1f,1) / MathF.Sqrt(2.0f);
     public int Health = 3;
     public int Score;
+    public int BonusScore;
+    public Vector2f spawnPosition = new Vector2f(250, 400);
     public Text gui;
+    private Vector2f newPos = new Vector2f(250, 400);
 
     public Ball()
     {
         sprite = new Sprite();
         sprite.Texture = new Texture("assets/ball.png");
-        sprite.Position = new Vector2f(250, 300);
+        sprite.Position = spawnPosition;
         Vector2f ballTextureSize = (Vector2f)sprite.Texture.Size;
         sprite.Origin = 0.5f * ballTextureSize;
         sprite.Scale = new Vector2f(
@@ -46,9 +50,9 @@ public class Ball
         target.Draw(gui);
     }
 
-    public void Update(float dt)
+    public void Update(float dt, Paddle paddle)
     {
-        var newPos = sprite.Position;
+        //newPos = sprite.Position;
         newPos += direction * dt * 100.0f;
         if (newPos.X > Program.ScreenW - Radius)
         {
@@ -67,10 +71,10 @@ public class Ball
         }
         if (newPos.Y > Program.ScreenH - Radius)
         {
-            newPos.X = 250;
-            newPos.Y = 300;
-            direction = new Vector2f(1, 1) / MathF.Sqrt(2.0f);
+            ballOnPaddle(paddle);
+            //direction = new Vector2f(1, 1) / MathF.Sqrt(2.0f);
             Health--;
+            BonusScore = 0; // Nollställer bonus ifall boll når botten
         }
         sprite.Position = newPos;
     }
@@ -80,6 +84,20 @@ public class Ball
         direction -= normal * (2 * (
             direction.X * normal.X +
             direction.Y * normal.Y));
+    }
+
+    public void ballOnPaddle(Paddle paddle)
+    {
+        do
+        {
+            newPos.Y = paddle.sprite.Position.Y - 20;
+            newPos.X = paddle.sprite.Position.X;
+            //direction = new Vector2f(0, 0);
+            sprite.Position = newPos;
+
+        }while(!Keyboard.IsKeyPressed(Keyboard.Key.Space));
+        
+        //direction = new Vector2f(1, -1) / MathF.Sqrt(2.0f);
     }
     
     
