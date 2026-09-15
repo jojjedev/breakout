@@ -8,9 +8,9 @@ public class PowerUp
     public Sprite sprite;
     public const float Diameter = 20.0f;
     public const float Radius = Diameter * .5f;
-    public Vector2f direction = new Vector2f(0,1) / MathF.Sqrt(4.0f);
-    public Vector2f spawnPosition = new Vector2f(400, 600);
-    public Vector2f newPos = new Vector2f(400, 600);
+    public Vector2f direction = new Vector2f(0,0); // Default står still
+    public Vector2f spawnPosition = new Vector2f(-100, -100);
+    public Vector2f newPos = new Vector2f(-100, -100);
     
     public PowerUp()
     {
@@ -36,9 +36,10 @@ public class PowerUp
         newPos += direction * dt * 100.0f;
         sprite.Position = newPos;
 
-        if (newPos.Y > Program.ScreenH - Radius)
+        if (newPos.Y > Program.ScreenH - Radius) // Om man missar powerUpen så återställs den till ursprungsposition.
         {
             newPos = new Vector2f(-100f, -100f);
+            direction = new Vector2f(0, 0);
         }
     }
 }

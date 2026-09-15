@@ -8,7 +8,7 @@ namespace breakout;
 
 public class Ball
 {
-    public Sprite sprite;
+    public Sprite sprite; 
     public const float Diameter = 20.0f;
     public const float Radius = Diameter * .5f;
     public Vector2f direction = new Vector2f(RandomDirection(),1) / MathF.Sqrt(2.0f);
@@ -18,16 +18,16 @@ public class Ball
     public Vector2f spawnPosition = new Vector2f(250, 400);
     public Text gui;
     public Vector2f newPos = new Vector2f(250, 400);
-    private bool ballOnPaddle = false;
+    public bool ballOnPaddle = true;
 
     public Ball()
     {
         sprite = new Sprite();
         sprite.Texture = new Texture("assets/ball.png");
         sprite.Position = spawnPosition;
-        Vector2f ballTextureSize = (Vector2f)sprite.Texture.Size;
-        sprite.Origin = 0.5f * ballTextureSize;
-        sprite.Scale = new Vector2f(
+        Vector2f ballTextureSize = (Vector2f)sprite.Texture.Size; //Får storleken på texturen från storleken på "ball.png"
+        sprite.Origin = 0.5f * ballTextureSize; //Ändrar spritens referenspunkt till mitten av texturen
+        sprite.Scale = new Vector2f(   //Bestämmer skalan på objeketet/spriten med hjälp av texture size
             Diameter / ballTextureSize.X,
             Diameter / ballTextureSize.Y);
         gui = new Text();
@@ -51,7 +51,6 @@ public class Ball
         gui.Position = new Vector2f(Program.ScreenW - gui.GetGlobalBounds().Width - 12, 8);
         target.Draw(gui);
     }
-
     public void Update(float dt, Paddle paddle)
     {
         //newPos = sprite.Position;
@@ -59,33 +58,30 @@ public class Ball
         if (newPos.X > Program.ScreenW - Radius)
         {
             newPos.X = Program.ScreenW - Radius;
-            Reflect(new Vector2f(-1, 0)); // Högersidan
+            Reflect(new Vector2f(-1, 0)); // Vid träff på högersidan anropas Reflect() -> bollen studsar ifrån sidan
         }
         if (newPos.X < 0 + Radius)
         {
             newPos.X = 0 + Radius;
-            Reflect(new Vector2f(1, 0)); // Vänstersidan
+            Reflect(new Vector2f(1, 0)); // Vid träff på vänstersidan anropas Reflect() -> bollen studsar ifrån sidan
         }
         if (newPos.Y < 0 + Radius)
         {
             newPos.Y = 0 + Radius;
-            Reflect(new Vector2f(0, 1)); // Taket
+            Reflect(new Vector2f(0, 1)); // Vid träff i taket anropas Reflect() -> bollen studsar ifrån sidan
         }
-        if (newPos.Y > Program.ScreenH - Radius)
+        if (newPos.Y > Program.ScreenH - Radius) // När bollen passerar nederkanten av skärmen minskas Health med 1 och boolean ballOnPaddle sätts till true.
         {
-            newPos.Y = paddle.sprite.Position.Y - paddle.size.Y / 2 - Radius - 5;
-            newPos.X = paddle.sprite.Position.X;
-            direction = new Vector2f(0, 0);
-            ballOnPaddle = true;
             Health--;
+            ballOnPaddle = true;
             BonusScore = 0; // Nollställer bonus ifall boll når botten
         }
 
-        if (ballOnPaddle)//newPos.Y == paddle.sprite.Position.Y - paddle.size.Y / 2 - Radius - 5)
+        if (ballOnPaddle) // När ballOnPaddle = true återställs positionen av ball till precis ovanför paddeln.
         {
             newPos.Y = paddle.sprite.Position.Y - paddle.size.Y / 2 - Radius - 5;
             newPos.X = paddle.sprite.Position.X;
-            if (Keyboard.IsKeyPressed(Keyboard.Key.Space))
+            if (Keyboard.IsKeyPressed(Keyboard.Key.Space)) // När man trycker på space skickas bollen iväg med en slumpmässig riktning.
             {
                 direction = new Vector2f(RandomDirection(), -1) / MathF.Sqrt(2.0f);
                 ballOnPaddle = false;
@@ -94,7 +90,7 @@ public class Ball
         sprite.Position = newPos;
     }
 
-    public static int RandomDirection()
+    public static int RandomDirection() // Returnar -1 eller 1 vilket representerar vinkeln som bollen skickas iväg med.
     {
         
         int angle = new Random().Next(0,2);
@@ -105,7 +101,7 @@ public class Ball
         return 1;
     }
     
-    public void Reflect(Vector2f normal)
+    public void Reflect(Vector2f normal) // Hanterar bollens direction vid studs med objekt/sida.
     {
         direction -= normal * (2 * (
             direction.X * normal.X +
