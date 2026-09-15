@@ -17,7 +17,7 @@ public class Ball
     public int BonusScore;
     public Vector2f spawnPosition = new Vector2f(250, 400);
     public Text gui;
-    private Vector2f newPos = new Vector2f(250, 400);
+    public Vector2f newPos = new Vector2f(250, 400);
     private bool ballOnPaddle = false;
 
     public Ball()
@@ -34,6 +34,7 @@ public class Ball
         gui.CharacterSize = 24;
         gui.Font = new Font("assets/future.ttf");
     }
+
 
     public void Draw(RenderTarget target)
     {
@@ -53,7 +54,6 @@ public class Ball
 
     public void Update(float dt, Paddle paddle)
     {
-       
         //newPos = sprite.Position;
         newPos += direction * dt * 100.0f;
         if (newPos.X > Program.ScreenW - Radius)

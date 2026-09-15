@@ -14,6 +14,7 @@ class Program
         Ball ball = new Ball();
         Paddle paddle = new Paddle();
         Tile tiles = new Tile();
+        PowerUp powerUp = new PowerUp();
 
         using (var window = new RenderWindow(
                    new VideoMode(ScreenW, ScreenH), "breakout"))
@@ -33,12 +34,15 @@ class Program
                 {
                     resetGame(ball, paddle, tiles);
                 }
-                paddle.Update(ball, dt);
+                paddle.Update(ball,dt, powerUp);
                 ball.Update(dt, paddle);
-                tiles.Update(ball, dt);
+                powerUp.Update(dt);
+                tiles.Update(ball, powerUp, dt);
+                
                 window.Clear(new Color(131, 197, 235));
                 paddle.Draw(window);
                 ball.Draw(window);
+                powerUp.Draw(window);
                 tiles.Draw(window);
                 window.Display();
             }

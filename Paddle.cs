@@ -32,7 +32,7 @@ public class Paddle
         target.Draw(sprite);
     }
 
-    public void Update(Ball ball, float dt)
+    public void Update(Ball ball, float dt, PowerUp powerUp)
     {
         var newPos = sprite.Position;
         if (Keyboard.IsKeyPressed(Keyboard.Key.Right) || Keyboard.IsKeyPressed(Keyboard.Key.D))
@@ -61,6 +61,13 @@ public class Paddle
             ball.sprite.Position += hit;
             ball.Reflect(hit.Normalized());
             ball.BonusScore = 0;
+        }
+        if(Collision.CircleRectangle(
+               powerUp.sprite.Position, PowerUp.Radius, this.sprite.Position, size, out Vector2f hit2))
+        {
+            powerUp.sprite.Position += hit2;
+            
+            powerUp.newPos = new Vector2f(-100f, -100f); //powerUp bollen fortsätter röra sig off screen, kan fixas
         }
     }
 }

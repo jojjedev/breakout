@@ -49,25 +49,30 @@ public class Tile
     {
         for (int i = 0; i < positions.Count; i++)
         {
-                switch (i % 3)
-                {
-                    case 0:
-                        sprite.Texture = new Texture("assets/tileBlue.png");
-                        break;
-                    case 1:
-                        sprite.Texture = new Texture("assets/tileGreen.png");
-                        break;
-                    case 2:
-                        sprite.Texture = new Texture("assets/tilePink.png");
-                        break;
-                }
-            
             sprite.Position = positions[i];
+            switch (positions[i].Y)
+            {
+                case < 115:
+                    sprite.Texture = new Texture("assets/tilePink.png");
+                    break;
+                case > 115 and < 165:
+                    sprite.Texture = new Texture("assets/tileBlue.png");
+                    break;
+                case > 165 and < 215:
+                    sprite.Texture = new Texture("assets/tileGreen.png");
+                    break;
+                case > 215 and < 260:
+                    sprite.Texture = new Texture("assets/tilePink.png");
+                    break;
+                case > 260:
+                    sprite.Texture = new Texture("assets/tileBlue.png");
+                    break;
+            }
             target.Draw(sprite);
         }
     }
 
-    public void Update(Ball ball, float dt)
+    public void Update(Ball ball, PowerUp powerUp, float dt)
     {
         for (int i = 0; i < positions.Count; i++)
         {
@@ -77,6 +82,11 @@ public class Tile
             {
                 ball.sprite.Position += hit;
                 ball.Reflect(hit.Normalized());
+
+                
+                powerUp.newPos = positions[i];
+                
+                
                 positions.RemoveAt(i);
                 ball.Score += 100 + ball.BonusScore;
                 ball.BonusScore += 10;
@@ -98,17 +108,5 @@ public class Tile
             }
             
         }
-    }
-
-    public static string setTileColor()
-    {
-        Random random = new Random();
-        int index = random.Next(0, 3);
-        string[] colorList = {
-            "assets/tileBlue.png", 
-            "assets/tileGreen.png", 
-            "assets/tilePink.png"
-        };
-        return colorList[index];
     }
 }
