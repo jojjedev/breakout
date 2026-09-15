@@ -11,7 +11,7 @@ public class Ball
     public Sprite sprite;
     public const float Diameter = 20.0f;
     public const float Radius = Diameter * .5f;
-    public Vector2f direction = new Vector2f(1f,1) / MathF.Sqrt(2.0f);
+    public Vector2f direction = new Vector2f(RandomDirection(),1) / MathF.Sqrt(2.0f);
     public int Health = 3;
     public int Score;
     public int BonusScore;
@@ -87,13 +87,24 @@ public class Ball
             newPos.X = paddle.sprite.Position.X;
             if (Keyboard.IsKeyPressed(Keyboard.Key.Space))
             {
-                direction = new Vector2f(0, -1) / MathF.Sqrt(2.0f);
+                direction = new Vector2f(RandomDirection(), -1) / MathF.Sqrt(2.0f);
                 ballOnPaddle = false;
             }
         }
         sprite.Position = newPos;
     }
 
+    public static int RandomDirection()
+    {
+        
+        int angle = new Random().Next(0,2);
+        if (angle == 0)
+        {
+            return -1;
+        }
+        return 1;
+    }
+    
     public void Reflect(Vector2f normal)
     {
         direction -= normal * (2 * (

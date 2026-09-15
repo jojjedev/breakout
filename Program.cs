@@ -4,7 +4,7 @@ using SFML.Graphics;
 
 namespace breakout;
 using SFML.System;
-//TODO: Till nästa gång, fixa färger, riktning vid space och hard bonus.
+//TODO: Till nästa gång, fixa färger och hard bonus.
 class Program
 {
     public const int ScreenW = 500;
