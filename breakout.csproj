@@ -11,5 +11,17 @@
       <PackageReference Include="CSFML" Version="2.5.0" />
       <PackageReference Include="SFML.Net" Version="2.5.0" />
     </ItemGroup>
+    <ItemGroup>
+      <None Remove="assets/*.png" />
+      <EmbeddedResource Include="assets/*.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </EmbeddedResource>
+    </ItemGroup>
+    <ItemGroup>
+      <None Remove="assets/*.ttf" />
+      <EmbeddedResource Include="assets/*.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </EmbeddedResource>
+    </ItemGroup>
 
 </Project>
