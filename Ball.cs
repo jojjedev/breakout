@@ -12,6 +12,7 @@ public class Ball
     public const float Diameter = 20.0f;
     public const float Radius = Diameter * .5f;
     public Vector2f direction = new Vector2f(RandomDirection(),1) / MathF.Sqrt(2.0f);
+    public float speed = 3;
     public int Health = 3;
     public int Score;
     public int BonusScore;
@@ -54,7 +55,7 @@ public class Ball
     public void Update(float dt, Paddle paddle)
     {
         //newPos = sprite.Position;
-        newPos += direction * dt * 100.0f;
+        newPos += direction * dt * 100.0f * speed;
         if (newPos.X > Program.ScreenW - Radius)
         {
             newPos.X = Program.ScreenW - Radius;
